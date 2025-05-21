@@ -1,0 +1,32 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  resourceGroup: 'myResourceGroup'
+  resourceName: 'shub-keyvault'
+  resourceType: 'Microsoft.KeyVault/vaults'
+  purpose: 'Secrets Management'
+  role: 'Security'
+  deploymentType: 'Manual'
+  owner: 'samplee@org.com'
+  environment: 'Dev'
+
+steps:
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'conn2'
+    ScriptType: 'FilePath'
+    ScriptPath: 'Tag-AzureResources.ps1'
+    ScriptArguments: >
+      -ResourceGroupName '$(resourceGroup)'
+      -ResourceName '$(resourceName)'
+      -ResourceType '$(resourceType)'
+      -Purpose '$(purpose)'
+      -Role '$(role)'
+      -DeploymentType '$(deploymentType)'
+      -Owner '$(owner)'
+      -Environment '$(environment)'
+    azurePowerShellVersion: 'LatestVersion'
